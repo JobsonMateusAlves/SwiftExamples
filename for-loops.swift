@@ -11,8 +11,3 @@ for index in 1..<5 {
 for index in 1...5 {
     print(index)           // 1 2 3 4 5
 }
-
-// Traditional for loop.
-for var i = 0; i < 5; i++ {
-    print(i)               // 0 1 2 3 4
-}
