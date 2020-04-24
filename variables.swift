@@ -1,7 +1,6 @@
 var yo = 1.0
-yo++
 yo += 1
-print(yo)                      // 3.0
+print(yo)                      // 2.0
 
 // Cannot redeclare variables
 /* var yo = 2.0 // 'yo' previously declared here */
