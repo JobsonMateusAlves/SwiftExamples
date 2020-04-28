@@ -14,9 +14,7 @@ class Example {
 let eg = Example(a: 1)
 print(eg.a)              // 1
 
-
 // ...Unless the params are declared with leading underscores.
-
 class Example2 {
     var a = 0
     var b = 0
@@ -31,13 +29,10 @@ let eg2 = Example2(1, 2)
 print(eg2.a)            // 1
 print(eg2.b)            // 2
 
-
 // # Lazy properties
-
 // Lazy properties' initial value aren't
 // initialized until the first time the
 // property is accessed.
-
 class Podcast {
     lazy var episode = Episode() // `var` declaration is required.
 }
@@ -48,12 +43,9 @@ class Episode {
 
 var podcast = Podcast()          // episode has not been initialized yet.
 print(podcast.episode.audio)   // somefile.mp3
-
 // # Computed properties
-
 // Computed properties don't store a value. Instead, getters / setters
 // are provided to retrieve and set _other_ properties.
-
 class Window {
     var x = 0.0, y = 0.0
     var width = 100.0, height = 100.0
@@ -75,7 +67,6 @@ print(win.center)               // (50.0, 50.0)
 win.center = (0.0, 10.0)
 print(win.x)                    // -50.0
 print(win.y)                    // -40.0
-
 // The param to `set` can be omitted and a magic "newValue"
 // can be used to referenced the new value.
 /*
@@ -85,7 +76,6 @@ x = newValue.0 - (width / 2)
 */
 
 // # Read-only computed properties
-
 class Song {
     var title = ""
     var duration = 0.0
@@ -102,12 +92,9 @@ song.title = "Rootshine Revival"
 song.duration = 2.01
 print(song.metaInfo["title"]!)    // Rootshine Revival
 print(song.metaInfo["duration"]!) // 2.01
-
 // # Property Observers
-
 // Property observers can be added onto any properties
 // (including inherited) except for lazy computed props.
-
 class Website {
     var visitors: Int = 0 {             // An explicit type is required
         willSet(newVisitorCount) {          // Called before the prop is set
@@ -122,7 +109,6 @@ class Website {
 var site = Website()
 site.visitors = 1
 print(site.visitors)                 // 1
-
 // # Type Properties
 // AKA class variables
 class Body {
@@ -133,7 +119,6 @@ class Body {
     }
 }
 print(Body.size)                     // 10
-
 // # Type Methods
 // AKA class methods
 class Banana {
@@ -143,26 +128,22 @@ class Banana {
     }
 }
 print(Banana.genus())                // Musa
-
 // # Instance methods
-
 class Month {
     var name: String
 
     init(name: String) {
         self.name = name
     }
-
+    
     func shortened() -> String {
-        return name[name.startIndex..<advance(name.startIndex, 3)]
+        let index = self.name.index(self.name.startIndex, offsetBy: 3)
+        return String(self.name[..<index])
     }
 }
 print(Month(name: "January").shortened())    // Jan
-
 // # Inheritance
-
 // Swift classes do not inherit from a universal base class.
-
 class Bicycle {
     var tireWidth: Double
     var topSpeed: Double
@@ -194,7 +175,7 @@ class MountainBike : Bicycle {
     }
     // Override parent's methods via `override` keyword
     override func go(distance: Double) {
-        super.go(distance)
+        super.go(distance: distance)
         print("Did \(distance) on a mountain bike")
     }
 
@@ -219,15 +200,12 @@ class MountainBike : Bicycle {
 var mountainBike = MountainBike()              // Gears was changed to 12
 mountainBike.topSpeed = 6.0
 print(mountainBike.topSpeed)                 // 2.0
-mountainBike.go(12.0)                          // Went 12.0 at a top speed of 10.0 in my mountain bike
+mountainBike.go(distance: 12.0)                          // Went 12.0 at a top speed of 10.0 in my mountain bike
 // Did 12.0 on a mountain bike
-
 // # Initializers
-
 // 'Convenience' initializers overload empty
 // initializers that populate the params
 // in 'designated' initializers.
-
 class iOS {
     var version: String
 
@@ -242,22 +220,16 @@ class iOS {
 
 var os = iOS()
 print(os.version)                          // 8.0.0
-
 // # ARC and reference cycles
-
 // Strong reference cycles happen when two objects
 // hold strong references to each other so that neither
 // can be deallocated (à la memory leaks in garbage collected langs)
-
 // Strong references can be resolved by declaring
 // references as `weak` or `unowned`
-
 // Use a weak reference whenever it's valid for the reference
 // to be nil at any point. These are optional types.
-
 class Driver {
     weak var car: Car? // Strong reference to car.
-
     deinit {
         print("Driver deinitialized")
     }
@@ -265,7 +237,6 @@ class Driver {
 
 class Car {
     weak var driver: Driver? // Weak reference to driver.
-
     deinit {
         print("Car deinitialized")
     }
@@ -281,10 +252,8 @@ car!.driver = driver
 
 driver = nil               // No more strong references to driver.
 car = nil                  // No more strong references to car.
-
 // Unowned references are like weak references except they always
 // refer to a value, so they're non-nil.
-
 class Artist {
     var instrument: Instrument?  // Strong reference to instrument.
 }
@@ -301,22 +270,19 @@ artist = Artist()
 artist!.instrument = Instrument(artist: artist!)
 
 artist = nil        // Both objects are deallocated since there are no more strong references.
-
 // # Access control
-
 // Access control in Swift is very much package-based.
 // `private`: Can only be accessed from the same source file that it's defined
 // `internal`: Can be accessed anywhere in the target it's defined
 // `public`: Accessible anywhere in the target and anywhere its module is imported
-
 // Defaults to `internal` if not explicitly declared.
-
 internal class Image { // Accessible in the same target
     internal var name : String
 
     private var mime : String {     // Accessible only in this file. Never settable.
         get {
-            return "image/\(name.pathExtension)"
+            let nsName = self.name as NSString
+            return "image/\(nsName.pathExtension)"
         }
     }
 
@@ -339,7 +305,11 @@ public class Webpage {
         self.created = NSDate()
         self.images = []
     }
+    
+    func append(image: Image) {
+        self.images.append(image)
+    }
 }
 
 var webPage = Webpage(title: "blog post")
-webPage.images.append(Image(name:"panda.gif"))
+webPage.append(image: Image(name:"panda.gif"))
