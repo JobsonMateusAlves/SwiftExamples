@@ -6,7 +6,7 @@
 var someInt = 3
 
 extension Int {
-    func isOdd () -> Bool{
+    func isOdd () -> Bool {
         return self % 2 != 0
     }
 
