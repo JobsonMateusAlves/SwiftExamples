@@ -39,7 +39,7 @@ func stats(numbers: [Int]) -> (min: Int, max: Int) {
 func noop(){}
 noop()
 
-var result = stats([1, 2, 4])
+var result = stats(numbers: [1, 2, 4])
 print(result.min)                      // 1
 print(result.max)                      // 4
 
@@ -49,23 +49,22 @@ func increment(number: Int, by incrementer: Int) -> Int {
     return number + incrementer
 }
 
-print(increment(1, by: 10))           // 11
+print(increment(number: 1, by: 10))           // 11
 
 // ...So fortunately there's a shorthand for re-using the same name.
 func incrementTakeTwo(number: Int, by: Int) -> Int {
     return number + by
 }
 
-print(increment(1, by: 10))           // 11
+print(increment(number: 1, by: 10))           // 11
 
 // Parameter values aren't modifiable by default.
 // But you can declare that you want to change a parameter
 // value (within the function) with a var keyword.
-func addOne(var num: Int) -> Int {
-    num++
-    return num
+func addOne(num: Int) -> Int {
+    return num + 1
 }
-addOne(1)                             // 2
+addOne(num: 1)                             // 2
 
 // # Default parameter values
 
@@ -76,8 +75,8 @@ func incrementTakeThree(number: Int, by: Int = 3) -> Int {
     return number + by
 }
 
-print(incrementTakeThree(1))         // 4
-print(incrementTakeThree(1, by:1))   // 2
+print(incrementTakeThree(number: 1))         // 4
+print(incrementTakeThree(number: 1, by:1))   // 2
 
 
 // # Variadic parameters
@@ -95,20 +94,20 @@ func sum(nums: Double...) -> Double {
 // <https://devforums.apple.com/message/970958#970958>
 // So you can't call a variadic function with an array of args.
 func average(nums: Double...) -> Double {
-    return sum(nums) / Double(nums.count)
+    return sum(numbers: nums) / Double(nums.count)
 }
-average(1.0, 2.0, 3.0, 4.0)            // 2.5
+average(nums: 1.0, 2.0, 3.0, 4.0)            // 2.5
 
 // # In-Out (pass-by-reference) parameters
 
 // inout params cannot be declared as var or let.
-func addOneSideEffect(inout num: Int) {
-    num++
+func addOneSideEffect(num: inout Int) {
+    num += 1
 }
 // Cannot pass constants and literals.
 var num = 1
 // Use an & before the var's name.
-addOneSideEffect(&num)
+addOneSideEffect(num: &num)
 print(num)                         // 2
 
 // # Function Types
@@ -126,7 +125,7 @@ mean(1.0, 4.0)                      // 2.5
 func skewedMean(mean: (Double...) -> Double, num1: Double, num2: Double) -> Double {
     return mean(num1, num2) + 1.0
 }
-skewedMean(mean, num1: 1.0, num2: 4.0)          // 3.5
+skewedMean(mean: mean, num1: 1.0, num2: 4.0)          // 3.5
 
 // Function types can be returned from functions.
 func choose(which: String) -> (Double...) -> Double {
@@ -135,24 +134,6 @@ func choose(which: String) -> (Double...) -> Double {
     }
     return mean
 }
-choose("sum")(1.0, 2.0)            // 3.0
-choose("mean")(1.0, 2.0)           // 1.5
+choose(which: "sum")(1.0, 2.0)            // 3.0
+choose(which: "mean")(1.0, 2.0)           // 1.5
 
-
-// # Nested Functions
-
-// Nested functions cannot be referenced outside of their parent function.
-
-func summer(var num: Double) -> (Double...) -> Double {
-    // Closure: the nested function is able to close over `num`.
-    func internalFunc (numbers: Double...) -> Double {
-        for i in numbers {
-            num += i
-        }
-        return num
-    }
-
-    return internalFunc
-}
-
-summer(1.0)(2.0, 3.0)              // 6.0
