@@ -21,7 +21,7 @@ func isEven (int: Int) -> Bool {
     return int % 2 == 0
 }
 
-switch isEven(i) {
+switch isEven(int: i) {
     case true: print("Even")
     case false: print("Odd")
 }
