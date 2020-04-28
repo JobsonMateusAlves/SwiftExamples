@@ -44,7 +44,7 @@ print(String(sizeOfNumbers()))              // 5
 // Similar to Ruby's blocks, if a function accepts a closure,
 // you can specify it after the function's parens.
 
-reversed = numbers.sort { $0 >  $1 }
+reversed = numbers.sorted(by: { $0 > $1 })
 
 var toStringed = numbers.map {
     (num: Int) -> String in
