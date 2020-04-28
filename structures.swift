@@ -1,3 +1,4 @@
+
 // Structs are copy by value, can't inherit, but can
 // conform to protocols
 
@@ -53,7 +54,7 @@ struct Mansion {
     }
 }
 var mansion = Mansion()
-mansion.addGarage(5)
+mansion.addGarage(newVal: 5)
 print(mansion.garageDoors)         // 10
 
 // # Type Methods
