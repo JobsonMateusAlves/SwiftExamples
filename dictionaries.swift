@@ -9,7 +9,7 @@ var strings = [
 ]
 
 // # Accessing and assigning elements
-print(strings["a"])                           // A
+print(strings["a"]!)                           // A
 strings["a"] = "AZ"                             // Returns an optional string (new value that was assigned)
 strings.updateValue("AX", forKey: "a")          // Returns an optional string (old value that was overwritten)
 
@@ -25,7 +25,7 @@ strings["a"] = nil
 // Using removeValueForKey removes the key-val pair
 // but returns the value that was removed (or nil if
 // the key-val didn't exist)
-strings.removeValueForKey("nope")
+strings.removeValue(forKey: "nope")
 
 // # Updating
 strings.updateValue("A", forKey: "a")
